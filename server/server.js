@@ -15,6 +15,16 @@ app.use(express.static(publicFolder));
 io.on('connection', (socket) => {
     console.log('New user connected.')
 
+    socket.emit('newMessage', {
+        from: 'Chandni Gondhiya',
+        text: 'Hello Hiren',
+        createdAt: new Date().getDate().toString()
+    });
+
+    socket.on('createMessage', function createMessageListener (message) {
+        console.log(`Create message: ${JSON.stringify(message, undefined, 2)}`);
+    });
+
     socket.on('disconnect', () => {
         console.log('Disconnected from client.')
     });
