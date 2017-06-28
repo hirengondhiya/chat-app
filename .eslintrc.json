@@ -6,12 +6,14 @@
     "globals": {
         "describe": true,
         "it": true,
-        "io": true
+        "io": true,
+        "$": true
     },
     "extends": "@jbpionnier/eslint-config-node",
     "rules": {
         "indent": ["error", 4],
         "semi": ["error", "always"],
-        "max-depth": ["error", 5]
+        "max-depth": ["error", 5],
+        "max-nested-callbacks": ["error", 5]
     }
 }

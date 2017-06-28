@@ -21,9 +21,10 @@ io.on('connection', (socket) => {
 
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User Joined'));
 
-    const createMessageListener = function createMessageListenerMethod(message) {
+    const createMessageListener = function createMessageListenerMethod(message, callback) {
         console.log(`Create message: ${JSON.stringify(message, undefined, 2)}`);
         io.emit('newMessage', generateMessage(message.from, message.text));
+        callback('This is from server.');
         // socket.broadcast.emit('newMessage', {
         //     from: message.from,
         //     text: message.text,
