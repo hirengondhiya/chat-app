@@ -40,7 +40,8 @@
     socket.on('newLocationMessage', function newLocationMessageListener(message) {
         var li = $(document.createElement('li'));
         var a = $('<a target="_blank">My Current location</a>');
-        li.text(`${message.from}: `);
+        const formattedTime = moment(message.createdAt).format('h:mm a');
+        li.text(`${message.from}: (${formattedTime}): `);
         a.attr('href', message.url);
         li.append(a);
         messagesOl.append(li);
@@ -48,7 +49,8 @@
 
     socket.on('newMessage', function newMessageListener(message) {
         var li = $(document.createElement('li'));
-        li.text(`${message.from}: ${message.text}`);
+        const formattedTime = moment(message.createdAt).format('h:mm a');
+        li.text(`${message.from} (${formattedTime}): ${message.text}`);
         messagesOl.append(li);
         console.log('New message: ', JSON.stringify(message, undefined, 2));
     });
