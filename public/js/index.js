@@ -1,7 +1,7 @@
-var socket = io();
+const socket = io();
 
 socket.on('connect', function connectListener() {
-    console.log('Connected to server.')
+    console.log('Connected to server.');
 
     socket.emit('createMessage', {
         text: 'hello how are you?',
@@ -10,9 +10,9 @@ socket.on('connect', function connectListener() {
 });
 
 socket.on('disconnect', function disconnectListener() {
-    console.log('Disconnected from server.')
+    console.log('Disconnected from server.');
 });
 
-socket.on('newMessage', function newMessageListener (message) {
-    console.log('New message: ' + JSON.stringify(message, undefined, 2));
+socket.on('newMessage', function newMessageListener(message) {
+    console.log('New message: ', JSON.stringify(message, undefined, 2));
 });

@@ -1,9 +1,13 @@
-var env = process.env.NODE_ENV || 'development';
+module.exports.loadEnvironment = () => {
+    const env = process.env.NODE_ENV || 'development';
 
-if (env === 'development' || env === 'test') {
-    var envConfig = require('./environment.json')[env];
+    if (env === 'development' || env === 'test') {
+        const envConfig = require('./environment.json')[env];
 
-    for (key in envConfig) {
-        process.env[key] = envConfig[key];
+        for (const key in envConfig) {
+            if (envConfig.hasOwnProperty(key)) {
+                process.env[key] = envConfig[key];
+            }
+        }
     }
-}
+};

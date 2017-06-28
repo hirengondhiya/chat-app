@@ -1,0 +1,15 @@
+{
+    "env":{
+        "browser": true,
+        "node": true
+    },
+    "globals": {
+        "io": true
+    },
+    "extends": "@jbpionnier/eslint-config-node",
+    "rules": {
+        "indent": ["error", 4],
+        "semi": ["error", "always"],
+        "max-depth": ["error", 5]
+    }
+}
