@@ -2,10 +2,10 @@ const generateMessage = function generateMessageMethod(from, text) {
     return { from, text, createdAt: new Date().getTime() };
 };
 
-const generateLocationMessage = function generateLocationMessageMethod(from, longitude, latitude) {
+const generateLocationMessage = function generateLocationMessageMethod(from, latitude, longitude) {
     return {
         from,
-        url: `https://www.google.com/maps/?q${latitude},${longitude}`,
+        url: `https://www.google.com/maps/?q=${latitude},${longitude}`,
         createdAt: new Date().getTime()
     };
 };
