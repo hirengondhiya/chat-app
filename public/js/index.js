@@ -38,21 +38,25 @@
     });
 
     socket.on('newLocationMessage', function newLocationMessageListener(message) {
-        var li = $(document.createElement('li'));
-        var a = $('<a target="_blank">My Current location</a>');
         const formattedTime = moment(message.createdAt).format('h:mm a');
-        li.text(`${message.from}: (${formattedTime}): `);
-        a.attr('href', message.url);
-        li.append(a);
-        messagesOl.append(li);
+        const template = $('#location-message-template').html();
+        const html = Mustache.render(template, {
+            url: message.url,
+            from: message.from,
+            createdAt: formattedTime
+        });
+        messagesOl.append(html);
     });
 
     socket.on('newMessage', function newMessageListener(message) {
-        var li = $(document.createElement('li'));
         const formattedTime = moment(message.createdAt).format('h:mm a');
-        li.text(`${message.from} (${formattedTime}): ${message.text}`);
-        messagesOl.append(li);
-        console.log('New message: ', JSON.stringify(message, undefined, 2));
+        const template = $('#message-template').html();
+        const html = Mustache.render(template, {
+            text: message.text,
+            from: message.from,
+            createdAt: formattedTime
+        });
+        messagesOl.append(html);
     });
 
     // socket.emit('createMessage', { from: 'Frank', text: 'Hi' }, createMessageAcknowledgement);

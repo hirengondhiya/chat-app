@@ -8,6 +8,7 @@
         "it": true,
         "io": true,
         "moment": true,
+        "Mustache": true,
         "$": true
     },
     "extends": "@jbpionnier/eslint-config-node",
