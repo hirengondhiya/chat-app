@@ -1,4 +1,4 @@
-const loadEnv = require('./env/load-environment');
+const env = require('./env/load-environment');
 
 const htttp = require('http');
 const socketIO = require('socket.io');
@@ -11,24 +11,23 @@ const server = htttp.createServer(app);
 const io = socketIO(server);
 const publicFolder = path.join(__dirname, '../public');
 
-loadEnv();
+env.loadEnvironment();
 app.use(express.static(publicFolder));
 
 io.on('connection', (socket) => {
     console.log('New user connected.');
     const createMessageListener = function createMessageListenerMethod(message) {
         console.log(`Create message: ${JSON.stringify(message, undefined, 2)}`);
+        io.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime().toString()
+        });
     };
 
     const disconnectListener = function disconnectListenerMethod() {
         console.log('Disconnected from client.');
     };
-
-    socket.emit('newMessage', {
-        from: 'Chandni Gondhiya',
-        text: 'Hello Hiren',
-        createdAt: new Date().getDate().toString()
-    });
 
     socket.on('createMessage', createMessageListener);
 
