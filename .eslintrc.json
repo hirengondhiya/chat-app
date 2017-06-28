@@ -4,6 +4,8 @@
         "node": true
     },
     "globals": {
+        "describe": true,
+        "it": true,
         "io": true
     },
     "extends": "@jbpionnier/eslint-config-node",
