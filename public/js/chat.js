@@ -66,15 +66,37 @@
         messagesOl.append(html);
         scrollToBottom();
     };
+    const joinAckowledgeListener = function joinAckowledgeListenerMethod(err) {
+        if (err) {
+            alert(err);
+            window.location.href = '/';
+        } else {
+            console.log('No error');
+        }
+    };
+
+    const updateUsersListListener = function updateUsersListListenerMethod(users) {
+        const usersDiv = $('#users');
+        const ol = $(document.createElement('ol'));
+        users.forEach(function (user) {
+            const li = $(document.createElement('li')).text(user);
+            ol.append(li);
+        }, this);
+        usersDiv.html(ol);
+        console.log(users);
+    };
 
     socket.on('connect', function connectListener() {
-        console.log('Connected to server.');
+        const params = $.deparam(window.location.search);
+
+        socket.emit('join', params, joinAckowledgeListener)
     });
     socket.on('disconnect', function disconnectListener() {
         console.log('Disconnected from server.');
     });
     socket.on('newLocationMessage', messageListener);
     socket.on('newMessage', messageListener);
+    socket.on('updateUsersList', updateUsersListListener);
     $('#message-form').on('submit', sendFormData) ;
     locationButton.on('click', sendLocation);
 })();

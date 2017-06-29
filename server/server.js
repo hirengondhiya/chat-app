@@ -11,6 +11,10 @@ const publicFolder = path.join(__dirname, '../public');
 
 const env = require('./env/load-environment');
 const { generateMessage, generateLocationMessage } = require('./utils/message');
+const { isRealString } = require('./utils/validation');
+const { Users } = require('./utils/users');
+let users = new Users();
+
 env.loadEnvironment();
 app.use(express.static(publicFolder));
 
@@ -27,12 +31,24 @@ io.on('connection', (socket) => {
         io.emit('newLocationMessage', generateLocationMessage('Admin', location.latitude, location.longitude));
     };
 
-    socket.emit('newMessage', generateMessage('Admin', 'Welcome to chat app.'));
+    const joinListener = function joinListenerMethod(params, callback) {
+        if (!isRealString(params.name) || !isRealString(params.room)) {
+            return callback('Name and Room are required.');
+        }
+        users.addUser(socket.id, params.name, params.room);
+        socket.join(params.room);
+        io.to(params.room).emit('updateUsersList', users.getUserList(params.room));
+        socket.emit('newMessage', generateMessage('Admin', `Welcome to the room ${params.room}`));
+        socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined the room.`));
+        callback();
+    };
 
-    socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User Joined'));
-
+    socket.on('join', joinListener);
 
     const disconnectListener = function disconnectListenerMethod() {
+        const user = users.removeUser(socket.id);
+        io.to(user.room).emit('updateUsersList', users.getUserList(user.room));
+        socket.broadcast.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left the room.`));
         console.log('Disconnected from client.');
     };
     socket.on('createMessage', createMessageListener);

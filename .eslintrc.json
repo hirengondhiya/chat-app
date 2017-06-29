@@ -4,6 +4,7 @@
         "node": true
     },
     "globals": {
+        "beforeEach": true,
         "describe": true,
         "it": true,
         "io": true,
