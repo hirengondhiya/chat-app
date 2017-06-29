@@ -22,13 +22,18 @@ io.on('connection', (socket) => {
     console.log('New user connected.');
 
     const createMessageListener = function createMessageListenerMethod(message, callback) {
-        console.log(`Create message: ${JSON.stringify(message, undefined, 2)}`);
-        io.emit('newMessage', generateMessage(message.from, message.text));
+        const user = users.getUser(socket.id);
+        if (user) {
+            io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+        }
         callback('This is from server.');
     };
 
     const locationMessageListener = function locationMessageListenerMethod(location) {
-        io.emit('newLocationMessage', generateLocationMessage('Admin', location.latitude, location.longitude));
+        const user = users.getUser(socket.id);
+        if (user) {
+            io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, location.latitude, location.longitude));
+        }
     };
 
     const joinListener = function joinListenerMethod(params, callback) {

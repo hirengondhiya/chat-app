@@ -22,7 +22,7 @@
     };
     const sendFormData = function sendFormDataMethod(e) {
         e.preventDefault();
-        socket.emit('createMessage', { from: 'Frank', text: messageTextBox.val() }, createMessageAcknowledgement);
+        socket.emit('createMessage', { text: messageTextBox.val() }, createMessageAcknowledgement);
     };
     const sendLocation = function sendLocationMethod(e) {
         if (!navigator.geolocation) {
